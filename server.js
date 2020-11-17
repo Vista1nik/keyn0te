@@ -146,6 +146,10 @@ next.prepare().then(() => {
                                     keynoteId: data.id,
                                     socket: ws
                                 })
+                            } else {
+                                ws.send(JSON.stringify({
+                                    type: 'notfound'
+                                }))
                             }
                         }
                     }

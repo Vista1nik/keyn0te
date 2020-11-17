@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react'
 import useQuery from '../lib/useQuery'
 
-import { Page } from 'react-pdf';
 import dynamic from 'next/dynamic';
 
 import Loading from '../components/ui/loading'
@@ -64,6 +63,38 @@ const Keynote = props => {
         }
     }, [query])
 
+    useEffect(() => {
+        props.socket.addEventListener('message', e => {
+            let data = JSON.parse(e.data)
+
+            if (data.type == 'keynoteControl') {
+                // Actions from remote control
+                switch(data.action) {
+                    case 'ping': {
+                        setRemoteLightbox(false)
+                        break;
+                    }
+                    case 'nextSlide': {
+                        if (slide + 1 <= keynote.totalSlides) {
+                            setSlide(slide + 1)
+                        } else {
+                            setSlide(1)
+                        }
+                        break;
+                    }
+                    case 'backSlide': {
+                        if (slide - 1 != 0) {
+                            setSlide(slide - 1)
+                        } else {
+                            setSlide(keynote.totalSlides)
+                        }
+                        break
+                    }
+                }
+            }
+        })
+    })
+
     return (
         <div className="container">
             <style jsx>{`
@@ -80,6 +111,13 @@ const Keynote = props => {
                     font-size: 3em;
                     margin: 0 12px;
                 }
+
+                .lightbox-code-divider {
+                    color: #333;
+                    font-size: 3em;
+                    margin: 0;
+                }
+
                 .lightbox-text {
                     color: #666;
                 }
@@ -116,9 +154,10 @@ const Keynote = props => {
                         }} align="center">
                             <div className="lightbox-code-container">
                                 <h1 className="lightbox-code">{keynote.id.split('-')[0]}</h1>
+                                <h1 className="lightbox-code-divider">-</h1>
                                 <h1 className="lightbox-code">{keynote.id.split('-')[1]}</h1>
                             </div>
-                            <p className="lightbox-text">Введите код на <a href={`http://${url}/r`}>{url}/r</a></p>
+                            <p className="lightbox-text">Введите код на <a href={`http://${url}/r?c=${keynote.id}`}>{url}/r</a></p>
                             <div className="divider">
                                 <hr />
                                 <p>или</p>

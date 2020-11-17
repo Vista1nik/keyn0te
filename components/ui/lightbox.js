@@ -25,7 +25,7 @@ const LightBox = props => (
 
             @keyframes slidein {
                 from {
-                    transform: translateY(50vh);
+                    transform: translateY(100vh);
                 }
 
                 to {
