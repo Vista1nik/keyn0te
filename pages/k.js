@@ -10,7 +10,7 @@ import Key from '../components/ui/key'
 import QRCode from 'react-qr-code'
 
 const PdfViewer = dynamic(
-  () => import('../components/PdfViewer'),
+  () => import('../components/pdfViewer'),
   { ssr: false }
 );
 
