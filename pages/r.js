@@ -38,6 +38,7 @@ const Remote = props => {
                 payload: ''
             }))
         } else {
+            codePart1.current.focus()
         }
     }, [keynoteID])
 

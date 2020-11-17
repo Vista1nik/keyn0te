@@ -40,6 +40,22 @@ const Keynote = props => {
         }
     }, [remoteLightbox])
 
+    const nextSlide = () => {
+        if (slide + 1 <= keynote.totalSlides) {
+            setSlide(slide + 1)
+        } else {
+            setSlide(1)
+        }
+    }
+
+    const backSlide = () => {
+        if (slide - 1 != 0) {
+            setSlide(slide - 1)
+        } else {
+            setSlide(keynote.totalSlides)
+        }
+    }
+
     useEffect(() => {
         if (query) {
             setURL(window.location.host)
@@ -47,8 +63,8 @@ const Keynote = props => {
                 type: "keynoteInit",
                 keynote: query.f
             }))
-    
-            props.socket.addEventListener('message', e => {
+
+            const handler =  e => {
                 let data = JSON.parse(e.data)
     
                 if (data.type == 'keynoteInit') {
@@ -58,13 +74,17 @@ const Keynote = props => {
                         totalSlides: data.totalSlides
                     })
                 }
-            })
-        } else {
+            }
+    
+            props.socket.addEventListener('message', handler)
+            return () => {
+                props.socket.removeEventListener('message', handler)
+            }
         }
     }, [query])
 
     useEffect(() => {
-        props.socket.addEventListener('message', e => {
+        let handler = e => {
             let data = JSON.parse(e.data)
 
             if (data.type == 'keynoteControl') {
@@ -75,25 +95,22 @@ const Keynote = props => {
                         break;
                     }
                     case 'nextSlide': {
-                        if (slide + 1 <= keynote.totalSlides) {
-                            setSlide(slide + 1)
-                        } else {
-                            setSlide(1)
-                        }
+                        nextSlide()
                         break;
                     }
                     case 'backSlide': {
-                        if (slide - 1 != 0) {
-                            setSlide(slide - 1)
-                        } else {
-                            setSlide(keynote.totalSlides)
-                        }
-                        break
+                        backSlide()
+                        break;
                     }
                 }
             }
-        })
-    })
+        }
+        props.socket.addEventListener('message', handler)
+
+        return () => {
+            props.socket.removeEventListener('message', handler)
+        }
+    }, [slide, keynote])
 
     return (
         <div className="container">
@@ -148,7 +165,6 @@ const Keynote = props => {
                             lightboxRef.current.focus()
                         }} ref={lightboxRef} onKeyDown={e => {
                             if (e.code === "Enter" || e.code === "Escape" || e.code === "Space") {
-                                document.body.requestFullscreen()
                                 setRemoteLightbox(false)
                             }
                         }} align="center">
@@ -180,17 +196,9 @@ const Keynote = props => {
                         ref={keynoteRef} 
                         onKeyDown={e => {
                             if (e.code === "Enter"  || e.code === "Space" || e.code === "ArrowRight") {
-                                if (slide + 1 <= keynote.totalSlides) {
-                                    setSlide(slide + 1)
-                                } else {
-                                    setSlide(1)
-                                }
+                                nextSlide()
                             } else if (e.code === "Backspace" || e.code === "ArrowLeft") {
-                                if (slide - 1 != 0) {
-                                    setSlide(slide - 1)
-                                } else {
-                                    setSlide(keynote.totalSlides)
-                                }
+                                backSlide()
                             } else if (e.code === "Escape") {
                                 setRemoteLightbox(true)
                             }
@@ -208,7 +216,6 @@ const Keynote = props => {
                             setLoading(false)
                         }} url={keynote.file} pageNumber={slide} />
                     </div>
-
                 }
             </div>
         </div>
