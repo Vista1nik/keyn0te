@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { useRouter } from 'next/router';
+import Head from 'next/head'
 
 import '../styles/globals.css'
 
@@ -18,6 +19,9 @@ function MyApp({ Component, pageProps }) {
 
     return (
         <div>
+            <Head>
+                <title>keyn0te</title>
+            </Head>
             {socket ?
             <Component socket={socket} {...pageProps} />
             :
