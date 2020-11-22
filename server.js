@@ -169,7 +169,49 @@ next.prepare().then(() => {
                             })
                         }
                     }
+                }
 
+                case 'keynoteRenew': {
+                    // Check sessions of this socket and return existing session
+                    if (_.isEmpty(sessions.filter(session => session.socket == ws))) {
+                        const getPDFinfo = async (path) => {
+                            const pdfBuffer = await fs.readFile(path)
+                            const pdfData = await pdf(pdfBuffer)
+    
+                            return pdfData
+                        }
+    
+                        getPDFinfo(`${__dirname}/storage/${data.keynote}`)
+                        .then(pdfData => {
+                            let keynoteSession = {
+                                id: data.id,
+                                file: data.keynote,
+                                totalSlides: pdfData.numpages,
+                                socket: ws,
+                                req: req
+                            }
+                            console.log(`<keyn0te> Keynote ${data.keynote} session opened by ${req.socket.remoteAddress} ${client.device} ${client.family}`)
+                            sessions.push(keynoteSession)
+            
+                            ws.send(JSON.stringify({
+                                type: 'keynoteRenew',
+                                id: keynoteSession.id,
+                                file: `http://${req.headers.host}/storage/${keynoteSession.file}`,
+                                totalSlides: keynoteSession.totalSlides
+                            }))
+                        })
+                    } else {
+                        let keynoteSession = sessions.filter(session => session.socket == ws)[0]
+    
+                        ws.send(JSON.stringify({
+                            type: 'keynoteInit',
+                            id: keynoteSession.id,
+                            file: `http://${req.headers.host}/storage/${keynoteSession.file}`,
+                            slide: 1,
+                            totalSlides: keynoteSession.totalSlides
+                        }))
+                    }
+                    break
                 }
             }
         })

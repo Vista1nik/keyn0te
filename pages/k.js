@@ -22,6 +22,7 @@ const Keynote = props => {
     const [loading, setLoading] = useState(true)
     const [remoteLightbox, setRemoteLightbox] = useState(true)
     const [url, setURL] = useState(null)
+    const [renew, setRenew] = useState(false)
 
     const lightboxRef = useRef(null)
     const keynoteRef = useRef(null)
@@ -66,7 +67,7 @@ const Keynote = props => {
 
             const handler =  e => {
                 let data = JSON.parse(e.data)
-    
+
                 if (data.type == 'keynoteInit') {
                     setKeynote({
                         id: data.id,
@@ -75,7 +76,7 @@ const Keynote = props => {
                     })
                 }
             }
-    
+
             props.socket.addEventListener('message', handler)
             return () => {
                 props.socket.removeEventListener('message', handler)
@@ -83,8 +84,9 @@ const Keynote = props => {
         }
     }, [query])
 
+    // Remote handler
     useEffect(() => {
-        let handler = e => {
+        const handler = e => {
             let data = JSON.parse(e.data)
 
             if (data.type == 'keynoteControl') {
@@ -106,11 +108,22 @@ const Keynote = props => {
             }
         }
         props.socket.addEventListener('message', handler)
-
+        setRenew(false)
         return () => {
             props.socket.removeEventListener('message', handler)
         }
-    }, [slide, keynote])
+    }, [slide, keynote, renew])
+
+    useEffect(() => {
+        if (keynote && props.socket !== 'placeholder') {
+                props.socket.send(JSON.stringify({
+                    type: "keynoteRenew",
+                    keynote: query.f,
+                    id: keynote.id
+                }))
+                setRenew(true)
+        }
+    }, [props.socket])
 
     return (
         <div className="container">

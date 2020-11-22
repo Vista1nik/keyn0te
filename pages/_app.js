@@ -10,12 +10,19 @@ function MyApp({ Component, pageProps }) {
     const [socket, setSocket] = useState(null)
 
     useEffect(() => {
-        const ws = new WebSocket(`ws://${window.location.host}`);
+        if (!socket || socket === 'placeholder') {
+            const ws = new WebSocket(`ws://${window.location.host}`);
 
-        ws.addEventListener('open', e => {
-            setSocket(ws)
-        })
-    }, [])
+            ws.addEventListener('open', e => {
+                setSocket(ws)
+            })
+    
+            ws.addEventListener('close', e => {
+                // Set socket to placeholder to avoid erasing keynote state
+                setSocket('placeholder')
+            })
+        }
+    }, [socket])
 
     return (
         <div>
@@ -23,7 +30,7 @@ function MyApp({ Component, pageProps }) {
                 <title>keyn0te</title>
             </Head>
             {socket ?
-            <Component socket={socket} {...pageProps} />
+                <Component socket={socket} {...pageProps} />
             :
             <div className="loading">
                 <Loading />
