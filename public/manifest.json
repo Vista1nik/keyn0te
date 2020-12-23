@@ -1,0 +1,14 @@
+{
+    "name": "Keyn0te",
+    "short_name": "Remote",
+    "lang": "ru",
+    "start_url": "/r",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "icons": [
+      {
+        "src": "icon.png",
+        "sizes": "512x512"
+      }
+    ]
+  }

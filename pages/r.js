@@ -3,6 +3,14 @@ import Key from '../components/ui/key';
 import useQuery from '../lib/useQuery'
 
 import { useSwipeable } from 'react-swipeable'
+import dynamic from "next/dynamic";
+
+const QrScanner = dynamic(
+    () => import('react-qr-scanner'),
+    {
+        ssr: false
+    }
+)
 
 const Remote = props => {
     const query = useQuery();
@@ -89,7 +97,7 @@ const Remote = props => {
 
                 .code-description {
                     color: #666;
-                    width: 23vw;
+                    width: 60vw;
                 }
 
                 .touch {
@@ -103,6 +111,21 @@ const Remote = props => {
 
                 .touch:active {
                     transform: scale(0.8)
+                }
+
+                .divider {
+                    display: flex;
+                    align-items: center;
+                }
+
+                .divider > p {
+                    color: #333;
+                    margin: 0 8px;
+                }
+
+                .scanner {
+                    width: 282px !important;
+                    height: 282px !important;
                 }
             `}</style>
             {keynoteID ? 
@@ -123,6 +146,21 @@ const Remote = props => {
                 </div>
             :
                 <div align="center">
+                    <div className="scanner">
+                        <QrScanner
+                            style={{
+                                height: "100%",
+                                width: "100%",
+                                objectFit: "cover",
+                                borderRadius: 12
+                            }}
+                            onScan={data => {
+                                if (data) {
+                                    setKeynoteID(new URLSearchParams(new URL(data).search).get('c'))
+                                }
+                            }}
+                        />
+                    </div>
                     <div className="code">
                         <input 
                             ref={codePart1} 
@@ -167,7 +205,7 @@ const Remote = props => {
                             }}
                         />
                     </div>
-                    <p className="code-description">Введите код с экрана презентации. Если код не показан, вызовите окно с кодом нажав на <Key>ESC</Key></p>
+                    <p className="code-description">Введите код с экрана презентации. <br /> Если код не показан, вызовите окно с кодом нажав на <Key>ESC</Key></p>
                 </div>
             }
         </div>

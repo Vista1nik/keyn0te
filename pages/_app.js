@@ -28,6 +28,22 @@ function MyApp({ Component, pageProps }) {
         <div>
             <Head>
                 <title>keyn0te</title>
+                <meta name="mobile-web-app-capable" content="yes"></meta>
+                <meta name="apple-mobile-web-app-capable" content="yes"></meta>
+                <link rel="manifest" href="manifest.json" />
+
+                <meta name="mobile-web-app-capable" content="yes" />
+                <meta name="apple-mobile-web-app-capable" content="yes" />
+                <meta name="application-name" content="Remote" />
+                <meta name="apple-mobile-web-app-title" content="Remote" />
+                <meta name="theme-color" content="#000000" />
+                <meta name="msapplication-navbutton-color" content="#000000" />
+                <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+                <meta name="msapplication-starturl" content="/r" />
+                <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+                <link rel="icon" sizes="512x512" href="icon.png" />
+                <link rel="apple-touch-icon" sizes="512x512" href="icon.png" />
             </Head>
             {socket ?
                 <Component socket={socket} {...pageProps} />

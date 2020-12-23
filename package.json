@@ -19,6 +19,7 @@
     "react-icons": "^3.11.0",
     "react-pdf": "^5.0.0",
     "react-qr-code": "^1.0.3",
+    "react-qr-scanner": "^0.0.11",
     "react-swipeable": "^6.0.0",
     "useragent": "^2.3.0",
     "ws": "^7.4.0"

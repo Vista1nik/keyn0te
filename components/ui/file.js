@@ -6,7 +6,7 @@ const File = props => (
     <div>
         <style jsx>{`
             .file {
-                background-color: ${props.alternate ? '#0A0A0A': '#000'};
+                background-color: ${props.alternate ? '#111': '#000'};
                 display: flex;
                 padding: 12px;
                 margin: 4px 0;
@@ -25,11 +25,11 @@ const File = props => (
 
             .file:hover {
                 cursor: pointer;
-                background-color: #111;
+                background-color: #222;
             }
 
             .file:active {
-                background-color: #222;
+                background-color: #333;
             }
         `}</style>
         <Link href={`/k?f=${props.file}`}>

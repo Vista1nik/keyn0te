@@ -227,7 +227,7 @@ const Keynote = props => {
                     >
                         <PdfViewer onLoad={() => {
                             setLoading(false)
-                        }} url={keynote.file} pageNumber={slide} />
+                        }} url={keynote.file} width={1920} pageNumber={slide} />
                     </div>
                 }
             </div>
