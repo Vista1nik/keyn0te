@@ -159,6 +159,7 @@ const Remote = props => {
                                     setKeynoteID(new URLSearchParams(new URL(data).search).get('c'))
                                 }
                             }}
+                            facingMode="rear"
                         />
                     </div>
                     <div className="code">
