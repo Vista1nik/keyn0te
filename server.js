@@ -114,7 +114,7 @@ next.prepare().then(() => {
                                 ws.send(JSON.stringify({
                                     type: 'keynoteInit',
                                     id: keynoteSession.id,
-                                    file: `http://${req.headers.host}/storage/${keynoteSession.file}`,
+                                    file: `${req.headers.host.includes('localhost') ? 'http://' : 'https://'}${req.headers.host}/storage/${keynoteSession.file}`,
                                     slide: 1,
                                     totalSlides: keynoteSession.totalSlides
                                 }))
@@ -125,7 +125,7 @@ next.prepare().then(() => {
                             ws.send(JSON.stringify({
                                 type: 'keynoteInit',
                                 id: keynoteSession.id,
-                                file: `http://${req.headers.host}/storage/${keynoteSession.file}`,
+                                file: `${req.headers.host.includes('localhost') ? 'http://' : 'https://'}${req.headers.host}/storage/${keynoteSession.file}`,
                                 slide: 1,
                                 totalSlides: keynoteSession.totalSlides
                             }))
@@ -196,7 +196,7 @@ next.prepare().then(() => {
                             ws.send(JSON.stringify({
                                 type: 'keynoteRenew',
                                 id: keynoteSession.id,
-                                file: `http://${req.headers.host}/storage/${keynoteSession.file}`,
+                                file: `${req.headers.host.includes('localhost') ? 'http://' : 'https://'}${req.headers.host}/storage/${keynoteSession.file}`,
                                 totalSlides: keynoteSession.totalSlides
                             }))
                         })
@@ -206,7 +206,7 @@ next.prepare().then(() => {
                         ws.send(JSON.stringify({
                             type: 'keynoteInit',
                             id: keynoteSession.id,
-                            file: `http://${req.headers.host}/storage/${keynoteSession.file}`,
+                            file: `${req.headers.host.includes('localhost') ? 'http://' : 'https://'}${req.headers.host}/storage/${keynoteSession.file}`,
                             slide: 1,
                             totalSlides: keynoteSession.totalSlides
                         }))
