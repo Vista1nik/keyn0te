@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps }) {
 
     useEffect(() => {
         if (!socket || socket === 'placeholder') {
-            const ws = new WebSocket(`ws://${window.location.host}`);
+            const ws = new WebSocket(window.location.host.includes("localhost") ? `ws://${window.location.host}` : `wss://${window.location.host}`);
 
             ws.addEventListener('open', e => {
                 setSocket(ws)

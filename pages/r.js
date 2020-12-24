@@ -205,7 +205,7 @@ const Remote = props => {
                             }}
                         />
                     </div>
-                    <p className="code-description">Введите код с экрана презентации. <br /> Если код не показан, вызовите окно с кодом нажав на <Key>ESC</Key></p>
+                    <p className="code-description">Отсканируйте QR или введите код с экрана презентации. <br /> Если код не показан, вызовите окно с кодом нажав на <Key>ESC</Key></p>
                 </div>
             }
         </div>
