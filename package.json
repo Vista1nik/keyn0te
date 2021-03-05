@@ -8,12 +8,14 @@
     "start": "cross-env NODE_ENV=production node server.js"
   },
   "dependencies": {
+    "canvas": "^2.7.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.2",
     "express": "^4.17.1",
     "lodash": "^4.17.20",
     "next": "10.0.1",
     "pdf-parse": "^1.1.1",
+    "pdfjs-dist": "^2.6.347",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-icons": "^3.11.0",

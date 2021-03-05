@@ -15,6 +15,9 @@ const _ = require('lodash')
 const pdf = require('pdf-parse')
 const useragent = require('useragent')
 
+// Thumbnails
+const thumbnail = require('./lib/thumbnails')
+
 // Create Express instance
 const express = require('express')
 const cors = require('cors')
@@ -74,15 +77,24 @@ next.prepare().then(() => {
                     fs.readdir(`${__dirname}/storage`)
                     .then(dir => {
                         let keynotes = dir.map(file => {
-                            return {
-                                name: file
-                            }
+                            return new Promise((resolve, reject) => {
+                                thumbnail.create(`${__dirname}/storage/${file}`)
+                                .then(imageBase64 => {
+                                    resolve({
+                                        name: file,
+                                        thumbnail: imageBase64
+                                    })
+                                })
+                            })
                         })
 
-                        ws.send(JSON.stringify({
-                            type: 'keynotes',
-                            keynotes: keynotes
-                        }))
+                        Promise.all(keynotes)
+                        .then(keynotes => {
+                            ws.send(JSON.stringify({
+                                type: 'keynotes',
+                                keynotes: keynotes
+                            }))
+                        })
                     })
                     break;
                 }

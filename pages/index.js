@@ -44,7 +44,7 @@ const Index = props => {
                     </div>
                 :
                     keynotes.map((keynote, index) => (
-                        <File file={keynote.name} alternate={index % 2}>{keynote.name.substr(0, keynote.name.lastIndexOf('.'))}</File>
+                        <File file={keynote.name} thumbnail={keynote.thumbnail} alternate={index % 2}>{keynote.name.substr(0, keynote.name.lastIndexOf('.'))}</File>
                     ))
                 }
             </div>

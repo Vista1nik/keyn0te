@@ -31,9 +31,22 @@ const File = props => (
             .file:active {
                 background-color: #333;
             }
+
+            .thumbnail {
+                height: 64px;
+                margin-right: 24px;
+                border-radius: 11px;
+            }
         `}</style>
         <Link href={`/k?f=${props.file}`}>
-            <a className="file"><div className="file-icon"><FiFile /></div>{props.children}</a>
+            <a draggable={false} className="file">
+                <img 
+                    className="thumbnail" 
+                    src={`data:image/png;base64, ${props.thumbnail}`} 
+                    draggable={false}
+                />
+                {props.children}
+            </a>
         </Link>
     </div>
 )
